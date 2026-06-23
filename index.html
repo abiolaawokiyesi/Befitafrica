@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#090909" />
+  <meta name="description" content="BefitAfrica — Africa's No. 1 Fitness NGO. Fit to Lead. A community fitness platform with live GPS tracking, attendance, health monitoring and hub community for members across Lagos and beyond." />
+  <title>BefitAfrica — Fit to Lead</title>
+  <link rel="icon" type="image/png" href="bfa-logo.png" />
+  <link rel="apple-touch-icon" href="bfa-logo.png" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+    html,body{height:100%;}
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#090909;color:#fff;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;}
+    #root{min-height:100vh;}
+    ::-webkit-scrollbar{width:8px;height:8px;}
+    ::-webkit-scrollbar-track{background:transparent;}
+    ::-webkit-scrollbar-thumb{background:rgba(128,128,128,0.35);border-radius:8px;}
+    ::-webkit-scrollbar-thumb:hover{background:rgba(128,128,128,0.55);}
+    input,select,textarea,button{font-family:inherit;}
+    select option{background:#111;color:#fff;}
+    /* Animations */
+    @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.08);opacity:0.6;}}
+    @keyframes slideR{from{opacity:0;transform:translateX(28px);}to{opacity:1;transform:translateX(0);}}
+    @keyframes slideU{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    @keyframes bpm{0%,100%{transform:scale(1);}14%{transform:scale(1.18);}28%{transform:scale(1);}42%{transform:scale(1.12);}}
+    @keyframes ping{0%{transform:scale(1);opacity:0.8;}100%{transform:scale(2.4);opacity:0;}}
+    .fd{animation:fadeIn 0.4s ease both;}
+    .sl{animation:slideR 0.32s cubic-bezier(0.16,1,0.3,1) both;}
+    .su{animation:slideU 0.34s cubic-bezier(0.16,1,0.3,1) both;}
+    .hb{animation:bpm 1.4s ease-in-out infinite;}
+    @media (max-width:760px){body{font-size:15px;}}
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <!-- React 18 (production UMD) -->
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <!-- Data layer must load before the app -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

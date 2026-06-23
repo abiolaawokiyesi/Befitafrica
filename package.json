@@ -1,0 +1,12 @@
+{
+  "name": "befitafrica-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BefitAfrica — Africa's No. 1 Fitness NGO. A zero-build static community fitness web app with live GPS tracking, attendance, health monitoring and hub community.",
+  "keywords": ["fitness", "ngo", "befitafrica", "lagos", "community", "gps", "health"],
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "python3 -m http.server 8080",
+    "start": "python3 -m http.server 8080"
+  }
+}
