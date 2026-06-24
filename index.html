@@ -8,6 +8,7 @@
   <title>BefitAfrica — Fit to Lead</title>
   <link rel="icon" type="image/png" href="bfa-logo.png" />
   <link rel="apple-touch-icon" href="bfa-logo.png" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <style>
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
     html,body{height:100%;}
@@ -26,11 +27,17 @@
     @keyframes slideU{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
     @keyframes bpm{0%,100%{transform:scale(1);}14%{transform:scale(1.18);}28%{transform:scale(1);}42%{transform:scale(1.12);}}
     @keyframes ping{0%{transform:scale(1);opacity:0.8;}100%{transform:scale(2.4);opacity:0;}}
+    @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+    @keyframes breathe{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
     .fd{animation:fadeIn 0.4s ease both;}
     .sl{animation:slideR 0.32s cubic-bezier(0.16,1,0.3,1) both;}
     .su{animation:slideU 0.34s cubic-bezier(0.16,1,0.3,1) both;}
     .hb{animation:bpm 1.4s ease-in-out infinite;}
     @media (max-width:760px){body{font-size:15px;}}
+    /* Keep Leaflet panes/controls beneath the app's modals (which use z-index >= 900) */
+    .leaflet-container{background:#0c1b2c;font-family:inherit;}
+    .leaflet-pane,.leaflet-top,.leaflet-bottom{z-index:400 !important;}
+    .leaflet-control-attribution{font-size:9px;}
   </style>
 </head>
 <body>
@@ -38,6 +45,7 @@
   <!-- React 18 (production UMD) -->
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <!-- Data layer must load before the app -->
   <script src="data.js"></script>
   <script src="app.js"></script>

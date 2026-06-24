@@ -59,12 +59,12 @@ After about a minute you'll get a live URL like `https://befitafrica.vercel.app`
 
 ## Step 4 — Log in
 
-Use the admin account:
+Use the administrator account:
 
 - **Email:** abiola@befitafrica.org
 - **Password:** BFA@2026
 
-Only this account can manage members, hubs, analytics and reset passwords.
+Change this password after your first sign-in (Settings). Only this account can manage members, hubs, analytics and reset passwords. There are no demo members — the community starts empty and grows as real people register.
 
 ---
 
@@ -81,8 +81,8 @@ To update the app (for example, a new logo or text):
 
 ## Important notes
 
-- **GPS tracking:** works automatically on your Vercel site because Vercel serves over HTTPS (required for browser location). Accuracy depends on each member's device. The first time a member starts an activity, their browser will ask for location permission — they must tap **Allow**.
-- **Email verification:** real verification emails need a backend mail service, which a static site can't provide on its own. For now the verification step is simulated in-app. Everything else (accounts, login, the unverified-can't-log-in rule) is fully functional. A backend can be added later to send real emails.
+- **GPS tracking:** the app shows a real **OpenStreetMap** map and draws each member's live route on it. This works automatically on your Vercel site because Vercel serves over HTTPS (required for browser location). Accuracy depends on each member's device and open-sky conditions. The first time a member starts an activity, their browser asks for location permission — they must tap **Allow**. The map needs an internet connection to load its map tiles.
+- **Email verification:** members confirm their email in-app to activate their account, and unverified accounts cannot log in. Sending the actual confirmation email requires a backend mail service. Reference code to add real two-way verification (clickable link + 6-digit code) is included in the `email-verification-backend/` folder for when you're ready to add a backend.
 - **Data storage:** information is saved in each visitor's browser (localStorage). Great for demos and pitches. For shared, multi-device data you'll later add a database — that's a planned next step and doesn't change anything you deploy today.
 
 ---
