@@ -27,6 +27,18 @@ const FITNESS_GOALS=["Weight Loss","Weight Gain","Improved Fitness","Better Heal
 const OCCUPATIONS=["Accountant","Architect","Banker","Business Owner/Entrepreneur","Caterer/Chef","Civil Servant","Consultant","Customer Service Representative","Data Analyst","Dentist","Doctor/Physician","Driver","Economist","Electrician","Engineer","Farmer","Fashion Designer","Financial Analyst","Graphic Designer","Hairstylist/Barber","Human Resources Professional","Insurance Agent","IT Professional","Journalist","Lawyer","Lecturer/Professor","Logistics/Supply Chain Officer","Marketer","Mechanic","Medical Laboratory Scientist","Microfinance Officer","Military/Paramilitary","Nurse","Nutritionist/Dietitian","Pastor/Imam/Clergy","Pharmacist","Photographer/Videographer","Physiotherapist","Plumber","Police Officer","Politician/Public Servant","Project Manager","Real Estate Agent","Researcher","Sales Representative","Software Developer","Student","Teacher","Trader/Merchant","Unemployed","Other (specify)"];
 
 const HUBS_LIST=["Alapere","Ikorodu","Ikeja","Lekki","Yaba","Surulere","Festac","Ajah"];
+/* Real GPS coordinates for each hub. Alapere = Alapere Housing Estate, Kosofe, Lagos 210115. */
+const HUB_COORDS={
+  "Alapere":{lat:6.5847,lng:3.3897,address:"Alapere Housing Estate, Kosofe, Lagos 210115, Lagos"},
+  "Ikorodu":{lat:6.6194,lng:3.5106,address:"Ikorodu, Lagos"},
+  "Ikeja":{lat:6.6018,lng:3.3515,address:"Ikeja, Lagos"},
+  "Lekki":{lat:6.4698,lng:3.5852,address:"Lekki, Lagos"},
+  "Yaba":{lat:6.5095,lng:3.3711,address:"Yaba, Lagos"},
+  "Surulere":{lat:6.5009,lng:3.3556,address:"Surulere, Lagos"},
+  "Festac":{lat:6.4654,lng:3.2790,address:"Festac Town, Lagos"},
+  "Ajah":{lat:6.4669,lng:3.5658,address:"Ajah, Lagos"}
+};
+const GEOFENCE_KM=0.5; // members must be within 0.5km of a hub to clock in/out
 
 const COUNTRIES=["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo (Brazzaville)","Congo (Kinshasa)","Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Ivory Coast","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent and the Grenadines","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
@@ -47,3 +59,8 @@ function getMessages(){return loadStore(MSGS_KEY,{general:[],interhub:[],intrahu
 function setMessages(v){saveStore(MSGS_KEY,v);}
 function getHealthLog(memberId){const all=loadStore(HEALTH_KEY,{});return all[memberId]||[];}
 function addHealthLog(memberId,entry){const all=loadStore(HEALTH_KEY,{});all[memberId]=[...(all[memberId]||[]),entry];saveStore(HEALTH_KEY,all);}
+
+/* ---- Activity records per member ---- */
+const ACTIVITIES_KEY="bfa_activities_v1";
+function getActivities(memberId){const all=loadStore(ACTIVITIES_KEY,{});return all[memberId]||[];}
+function addActivity(memberId,rec){const all=loadStore(ACTIVITIES_KEY,{});all[memberId]=[...(all[memberId]||[]),rec];saveStore(ACTIVITIES_KEY,all);}

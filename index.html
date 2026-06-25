@@ -38,6 +38,24 @@
     .leaflet-container{background:#0c1b2c;font-family:inherit;}
     .leaflet-pane,.leaflet-top,.leaflet-bottom{z-index:400 !important;}
     .leaflet-control-attribution{font-size:9px;}
+    /* Animated athlete avatar (current-location marker) */
+    .bfaAvatarWrap{background:none !important;border:none !important;}
+    .bfaAvatar .bfaBody{transform-origin:20px 24px;}
+    .bfaRun .bfaBody{animation:bfaBob 0.5s ease-in-out infinite;}
+    .bfaRun .bfaLegA{transform-origin:18px 26px;animation:bfaLegSwing 0.5s ease-in-out infinite;}
+    .bfaRun .bfaLegB{transform-origin:22px 26px;animation:bfaLegSwing 0.5s ease-in-out infinite reverse;}
+    .bfaRun .bfaArmA{transform-origin:17px 16px;animation:bfaArmSwing 0.5s ease-in-out infinite reverse;}
+    .bfaRun .bfaArmB{transform-origin:23px 16px;animation:bfaArmSwing 0.5s ease-in-out infinite;}
+    .bfaWalk .bfaBody{animation:bfaBob 0.9s ease-in-out infinite;}
+    .bfaWalk .bfaLegA{transform-origin:18px 26px;animation:bfaLegSwingS 0.9s ease-in-out infinite;}
+    .bfaWalk .bfaLegB{transform-origin:22px 26px;animation:bfaLegSwingS 0.9s ease-in-out infinite reverse;}
+    .bfaWalk .bfaArmA{transform-origin:17px 16px;animation:bfaArmSwingS 0.9s ease-in-out infinite reverse;}
+    .bfaWalk .bfaArmB{transform-origin:23px 16px;animation:bfaArmSwingS 0.9s ease-in-out infinite;}
+    @keyframes bfaLegSwing{0%,100%{transform:rotate(28deg);}50%{transform:rotate(-28deg);}}
+    @keyframes bfaLegSwingS{0%,100%{transform:rotate(16deg);}50%{transform:rotate(-16deg);}}
+    @keyframes bfaArmSwing{0%,100%{transform:rotate(30deg);}50%{transform:rotate(-30deg);}}
+    @keyframes bfaArmSwingS{0%,100%{transform:rotate(16deg);}50%{transform:rotate(-16deg);}}
+    @keyframes bfaBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-2px);}}
   </style>
 </head>
 <body>
