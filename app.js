@@ -78,7 +78,7 @@ function SearchSelect({label,val,set,opts,t,ph,req}){const[open,setOpen]=useStat
 function Card({t,children,p="20px 22px",mb,style={}}){return h("div",{style:{background:t.surf,border:`1px solid ${t.border}`,borderRadius:14,padding:p,marginBottom:mb,...style}},children);}
 function StatBox({t,val,label,sub,accent,color}){return h("div",{style:{background:t.surf,border:`1px solid ${t.border}`,borderRadius:13,padding:"16px 18px"}},h("p",{style:{color:t.text2,fontSize:10,fontWeight:700,letterSpacing:1,textTransform:"uppercase",margin:"0 0 5px"}},label),h("p",{style:{color:color||(accent?t.Y:t.text),fontSize:24,fontWeight:900,margin:"0 0 3px",letterSpacing:-0.8}},val),sub&&h("p",{style:{color:t.ok,fontSize:11,margin:0,fontWeight:600}},sub));}
 function Notif({n}){if(!n)return null;return h("div",{className:"su",style:{position:"fixed",top:20,right:20,zIndex:9999,background:n.t==="err"?"#FF4D4D":"#00CC66",color:"#fff",padding:"11px 18px",borderRadius:12,fontSize:13,fontWeight:700,boxShadow:"0 8px 32px rgba(0,0,0,0.4)",maxWidth:320}},n.m);}
-function Modal({t,title,onClose,children,wide}){return h("div",{style:{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:16},onClick:e=>{if(e.target===e.currentTarget)onClose();}},h("div",{className:"su",style:{background:t.surf,borderRadius:20,padding:"26px 26px",width:"100%",maxWidth:wide?640:460,maxHeight:"90vh",overflowY:"auto"}},h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}},h("h2",{style:{color:t.text,fontSize:18,fontWeight:900,margin:0}},title),h("button",{onClick:onClose,style:{background:"none",border:"none",color:t.text2,cursor:"pointer",fontSize:20}},"✕")),children));}
+function Modal({t,title,onClose,children,wide}){return h("div",{style:{position:"fixed",inset:0,background:"rgba(0,0,0,0.7)",zIndex:1000,display:"flex",alignItems:"flex-start",justifyContent:"center",padding:16,overflowY:"auto"},onClick:e=>{if(e.target===e.currentTarget)onClose();}},h("div",{className:"su",style:{background:t.surf,borderRadius:20,padding:"26px 26px",width:"100%",maxWidth:wide?640:460,margin:"auto"}},h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18}},h("h2",{style:{color:t.text,fontSize:18,fontWeight:900,margin:0}},title),h("button",{onClick:onClose,style:{background:"none",border:"none",color:t.text2,cursor:"pointer",fontSize:20}},"✕")),children));}
 
 /* ---------- Splash ---------- */
 function Splash(){return h("div",{style:{width:"100%",height:"100vh",background:"radial-gradient(ellipse at 50% 40%,#141414 0%,#090909 70%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:30}},h("div",{className:"splashWrap",style:{position:"relative",width:200,height:200,display:"flex",alignItems:"center",justifyContent:"center"}},
@@ -95,8 +95,9 @@ function Splash(){return h("div",{style:{width:"100%",height:"100vh",background:
 /* ---------- Email verification screen ---------- */
 function VerifyNotice({t,email,token,onVerified,onBack}){
   const[done,setDone]=useState(false);
+  const cloud=(typeof bfaRegister==="function"); /* Supabase backend present */
   const verify=()=>{const p=loadPending();if(p[email]&&p[email].token===token){const u=p[email].member;u.verified=true;MEMBERS.push(u);persist();delete p[email];savePending(p);setDone(true);setTimeout(()=>onVerified(u),900);}};
-  return h("div",{style:{width:"100%",minHeight:"100vh",background:t.bg,display:"flex",alignItems:"center",justifyContent:"center",padding:20}},h("div",{className:"fd",style:{background:t.surf,border:`1px solid ${t.border}`,borderRadius:22,padding:"34px 30px",width:"100%",maxWidth:440,textAlign:"center"}},h("div",{style:{marginBottom:10,display:"flex",justifyContent:"center"}},h(Icon,{name:done?"check":"mail",size:46,color:done?t.ok:t.Yt})),h("h2",{style:{color:t.text,fontSize:21,fontWeight:900,margin:"0 0 8px"}},done?"Email verified!":"Verify your email"),h("p",{style:{color:t.text2,fontSize:13,lineHeight:1.7,margin:"0 0 8px"}},done?"Your BefitAfrica account is now active. Signing you in...":["We've sent a verification link to ",h("strong",{key:"e",style:{color:t.text}},email),". Click the link in that email to activate your account."]),!done&&h("div",{style:{background:t.Yd,border:`1px solid ${t.Y}30`,borderRadius:12,padding:"14px 16px",margin:"16px 0",fontSize:12,color:t.Yt,lineHeight:1.6}},h("strong",null,"Didn't get the email? "),"Check your spam folder, or tap below to confirm your address and activate your account."),!done&&h("button",{onClick:verify,style:{width:"100%",background:t.Y,border:"none",borderRadius:11,padding:"14px",fontSize:14,fontWeight:900,color:"#080808",cursor:"pointer"}},"\u2713 Verify my email & activate account"),!done&&h("button",{onClick:onBack,style:{width:"100%",background:"none",border:"none",color:t.text2,fontSize:12,cursor:"pointer",marginTop:14}},"\u2190 Back to sign in")));
+  return h("div",{style:{width:"100%",minHeight:"100vh",background:t.bg,display:"flex",alignItems:"center",justifyContent:"center",padding:20}},h("div",{className:"fd",style:{background:t.surf,border:`1px solid ${t.border}`,borderRadius:22,padding:"34px 30px",width:"100%",maxWidth:440,textAlign:"center"}},h("div",{style:{marginBottom:10,display:"flex",justifyContent:"center"}},h(Icon,{name:done?"check":"mail",size:46,color:done?t.ok:t.Yt})),h("h2",{style:{color:t.text,fontSize:21,fontWeight:900,margin:"0 0 8px"}},done?"Email verified!":"Verify your email"),h("p",{style:{color:t.text2,fontSize:13,lineHeight:1.7,margin:"0 0 8px"}},done?"Your BefitAfrica account is now active. Signing you in...":["We've sent a verification link to ",h("strong",{key:"e",style:{color:t.text}},email),". Click the link in that email to activate your account."]),!done&&h("div",{style:{background:t.Yd,border:`1px solid ${t.Y}30`,borderRadius:12,padding:"14px 16px",margin:"16px 0",fontSize:12,color:t.Yt,lineHeight:1.6}},h("strong",null,"Didn't get the email? "),cloud?"Check your spam folder. Once you click the link in the email, come back and sign in.":"Check your spam folder, or tap below to confirm your address and activate your account."),(!done&&!cloud)&&h("button",{onClick:verify,style:{width:"100%",background:t.Y,border:"none",borderRadius:11,padding:"14px",fontSize:14,fontWeight:900,color:"#080808",cursor:"pointer"}},"Verify my email & activate account"),!done&&h("button",{onClick:onBack,style:{width:"100%",background:cloud?t.Y:"none",border:"none",borderRadius:cloud?11:0,padding:cloud?"14px":0,color:cloud?"#080808":t.text2,fontSize:cloud?14:12,fontWeight:cloud?900:400,cursor:"pointer",marginTop:14}},cloud?"Back to sign in":"\u2190 Back to sign in")));
 }
 
 /* ---------- Auth: Login / Register / Forgot ---------- */
@@ -109,7 +110,23 @@ function Auth({onLogin,onNeedVerify,dm,setDm,startMode}){
   const[showP,setSP]=useState(false);const[err,setErr]=useState("");
   /* forgot */
   const[fEmail,setFE]=useState("");const[fSent,setFS]=useState(false);const[fNew,setFNew]=useState("");const[fStage,setFStage]=useState("request");
-  const doLogin=()=>{if(!email||!pass){setErr("Please fill in both fields");return;}const u=MEMBERS.find(u=>u.email.toLowerCase()===email.toLowerCase()&&u.password===pass);if(!u){setErr("Invalid email or password. Please try again.");return;}if(u.verified===false){setErr("Please verify your email before signing in.");return;}REMEMBERED=remember?{email:u.email,password:pass}:null;saveRemembered(REMEMBERED);saveSession(u);onLogin(u);setErr("");};
+  const doLogin=async()=>{
+    if(!email||!pass){setErr("Please fill in both fields");return;}
+    setErr("");
+    if(typeof bfaLogin==="function"){
+      /* Cloud backend (Supabase) */
+      setErr("Signing in\u2026");
+      const r=await bfaLogin(email.trim(),pass);
+      if(r.error){setErr(/confirm|verified|not.*confirm/i.test(r.error)?"Please verify your email before signing in (check your inbox).":r.error);return;}
+      REMEMBERED=remember?{email:email.trim()}:null;saveRemembered(REMEMBERED);
+      onLogin(r.user);setErr("");return;
+    }
+    /* Local fallback */
+    const u=MEMBERS.find(u=>u.email.toLowerCase()===email.toLowerCase()&&u.password===pass);
+    if(!u){setErr("Invalid email or password. Please try again.");return;}
+    if(u.verified===false){setErr("Please verify your email before signing in.");return;}
+    REMEMBERED=remember?{email:u.email,password:pass}:null;saveRemembered(REMEMBERED);saveSession(u);onLogin(u);setErr("");
+  };
   /* Only Abiola (admin) may reset passwords from the backend; self-service reset still allowed for own account */
   const doReset=()=>{const u=MEMBERS.find(m=>m.email.toLowerCase()===fEmail.toLowerCase());if(!u){setErr("No account found with that email");return;}setFStage("set");setErr("");};
   const saveNewPass=()=>{if(fNew.length<6){setErr("Password must be at least 6 characters");return;}const u=MEMBERS.find(m=>m.email.toLowerCase()===fEmail.toLowerCase());if(u){u.password=fNew;persist();}setFS(true);setErr("");};
@@ -156,10 +173,19 @@ function Registration({t,dm,onNeedVerify,onBackToLogin}){
   };
   const next=()=>{const e=validateStep();if(e){setErr(e);return;}setErr("");setStep(s=>s+1);};
 
-  const submit=()=>{
+  const submit=async()=>{
     if(!agreed){setErr("You must accept the participation agreement");return;}
     const occ=d.occupation==="Other (specify)"?d.occupationOther.trim():d.occupation;
-    const member={id:nextMemberId(),email:d.email.trim(),password:d.password,name:d.name.trim(),role:"member",occupation:occ,country:d.country,state:d.state,lga:d.lga,address:d.address.trim(),hub:d.hub,avatar:initials(d.name),joined:new Date().toLocaleString("en-US",{month:"short",year:"numeric"}),status:"new",verified:false,streak:0,sessions:0,km:0,bmi:d.height&&d.weight?+bmi:0,bp:(d.bp_s&&d.bp_d)?d.bp_s+"/"+d.bp_d:"\u2014",hr:+d.hr||0,weight:+d.weight||0,height:+d.height||0,phone:d.phone,gender:d.gender,goals:d.goals,attendance:[]};
+    const member={email:d.email.trim(),password:d.password,name:d.name.trim(),role:"member",occupation:occ,country:d.country,state:d.state,lga:d.lga,address:d.address.trim(),hub:d.hub,avatar:initials(d.name),joined:new Date().toLocaleString("en-US",{month:"short",year:"numeric"}),status:"new",verified:false,streak:0,sessions:0,km:0,bmi:d.height&&d.weight?+bmi:0,bp:(d.bp_s&&d.bp_d)?d.bp_s+"/"+d.bp_d:"\u2014",hr:+d.hr||0,weight:+d.weight||0,height:+d.height||0,phone:d.phone,gender:d.gender,goals:d.goals,attendance:[]};
+    if(typeof bfaRegister==="function"){
+      /* Cloud backend (Supabase) — sends a real verification email */
+      setErr("Creating your account\u2026");
+      const r=await bfaRegister(member,d.password);
+      if(r.error){setErr(r.error);return;}
+      onNeedVerify(member.email,null);return;
+    }
+    /* Local fallback */
+    member.id=nextMemberId();
     const token=makeToken();const p=loadPending();p[member.email]={token,member};savePending(p);
     onNeedVerify(member.email,token);
   };
@@ -194,25 +220,53 @@ function Registration({t,dm,onNeedVerify,onBackToLogin}){
 function makeAvatarIcon(gender,actType,moving){
   if(typeof L==="undefined")return null;
   const female=(gender==="Female");
-  const skin="#E8B98A",hair=female?"#3A2417":"#241A12",kit=female?"#FF6B9D":"#4DA6FF",accent="#FFE000";
-  const animClass=moving?(actType==="Walk"||actType==="Hike"?"bfaWalk":"bfaRun"):"";
-  /* simple stick-figure athlete; legs/arms animated via CSS class */
-  const svg=`<div class="bfaAvatar ${animClass}" style="width:46px;height:54px;position:relative;">
-    <svg viewBox="0 0 40 48" width="46" height="54">
-      <ellipse cx="20" cy="45" rx="11" ry="3" fill="rgba(0,0,0,0.25)"/>
-      <g class="bfaBody">
-        <circle cx="20" cy="8" r="5.5" fill="${skin}"/>
-        <path d="M14.5 6 Q20 0 25.5 6 Q25 3 20 2.5 Q15 3 14.5 6Z" fill="${hair}"/>
-        <rect x="15.5" y="13" width="9" height="13" rx="4" fill="${kit}"/>
-        <rect x="17" y="13" width="6" height="4" rx="2" fill="${accent}"/>
+  const skin="#C68642",hair=female?"#1c130b":"#150f08",top=female?"#FF4D8F":"#1E7FE0",shorts=female?"#2A2A33":"#15151B",shoe="#FFE000";
+  const walking=(actType==="Walk"||actType==="Hike");
+  const animClass=moving?(walking?"bfaWalk":"bfaRun"):"bfaIdle";
+  const lean=moving&&!walking?"rotate(8 22 30)":"rotate(0 22 30)";
+  /* Realistic human runner: head, neck, leaning torso, jointed arms (upper+fore) and legs (thigh+shin), shoes. */
+  const svg=`<div class="bfaAvatar ${animClass}" style="width:54px;height:62px;">
+    <svg viewBox="0 0 44 56" width="54" height="62">
+      <ellipse class="bfaShadow" cx="22" cy="53" rx="12" ry="3" fill="rgba(0,0,0,0.28)"/>
+      <g transform="${lean}">
+        <!-- LEGS (behind torso) -->
+        <g class="bfaLegBack">
+          <g class="bfaThighB"><rect x="20" y="32" width="5.6" height="12" rx="2.8" fill="${shorts}"/>
+            <g class="bfaShinB"><rect x="21" y="42" width="4.6" height="11" rx="2.3" fill="${skin}"/>
+              <ellipse class="bfaShoeB" cx="24" cy="53" rx="4.6" ry="2.4" fill="${shoe}"/></g></g>
+        </g>
+        <!-- ARMS (behind) -->
+        <g class="bfaArmBack">
+          <g class="bfaUpArmB"><rect x="20" y="17" width="4.4" height="9" rx="2.2" fill="${top}"/>
+            <g class="bfaForeB"><rect x="20.5" y="24" width="3.8" height="8.5" rx="1.9" fill="${skin}"/></g></g>
+        </g>
+        <!-- TORSO -->
+        <g class="bfaTorso">
+          <path d="M17 17 Q22 14 27 17 L26 33 Q22 35 18 33 Z" fill="${top}"/>
+          <rect x="18.5" y="17" width="7" height="3.2" rx="1.6" fill="rgba(255,255,255,0.25)"/>
+        </g>
+        <!-- HEAD + neck -->
+        <g class="bfaHead">
+          <rect x="20.4" y="12" width="3.2" height="5" fill="${skin}"/>
+          <circle cx="22" cy="9" r="5" fill="${skin}"/>
+          <path d="M17.2 8.5 Q17 2.5 22 2.2 Q27 2.5 26.8 8.5 Q26 5 22 4.6 Q18 5 17.2 8.5 Z" fill="${hair}"/>
+          ${female?`<path d="M17.2 8 Q16.4 13 18 16 L19.4 15 Q18.2 11.5 18.6 8 Z" fill="${hair}"/><path d="M26.8 8 Q27.6 13 26 16 L24.6 15 Q25.8 11.5 25.4 8 Z" fill="${hair}"/>`:""}
+        </g>
+        <!-- LEGS (front) -->
+        <g class="bfaLegFront">
+          <g class="bfaThighF"><rect x="18.4" y="32" width="5.6" height="12" rx="2.8" fill="${shorts}"/>
+            <g class="bfaShinF"><rect x="19" y="42" width="4.6" height="11" rx="2.3" fill="${skin}"/>
+              <ellipse class="bfaShoeF" cx="20" cy="53" rx="4.6" ry="2.4" fill="${shoe}"/></g></g>
+        </g>
+        <!-- ARMS (front) -->
+        <g class="bfaArmFront">
+          <g class="bfaUpArmF"><rect x="19.6" y="17" width="4.4" height="9" rx="2.2" fill="${top}"/>
+            <g class="bfaForeF"><rect x="19.8" y="24" width="3.8" height="8.5" rx="1.9" fill="${skin}"/></g></g>
+        </g>
       </g>
-      <g class="bfaArmA" stroke="${skin}" stroke-width="3" stroke-linecap="round"><line x1="17" y1="16" x2="12" y2="22"/></g>
-      <g class="bfaArmB" stroke="${skin}" stroke-width="3" stroke-linecap="round"><line x1="23" y1="16" x2="28" y2="21"/></g>
-      <g class="bfaLegA" stroke="${kit}" stroke-width="3.4" stroke-linecap="round"><line x1="18" y1="26" x2="14" y2="38"/></g>
-      <g class="bfaLegB" stroke="${kit}" stroke-width="3.4" stroke-linecap="round"><line x1="22" y1="26" x2="26" y2="38"/></g>
     </svg>
   </div>`;
-  return L.divIcon({html:svg,className:"bfaAvatarWrap",iconSize:[46,54],iconAnchor:[23,48]});
+  return L.divIcon({html:svg,className:"bfaAvatarWrap",iconSize:[54,62],iconAnchor:[27,55]});
 }
 
 function LeafletMap({points,live,follow,height,gender,actType,moving,centerOn,geofence}){
@@ -291,22 +345,37 @@ function ActivityTracker({t,user,showNotif}){
   useEffect(()=>{if(recording&&!paused){tmr.current=setInterval(()=>{setEL(e=>e+1);setBpm(b=>Math.max(60,Math.min(185,b+(Math.random()>0.5?1:-1)+(actType==="HIIT"?2:0))));/* stop the running animation if no movement for 3s */ if(Date.now()-lastMoveT.current>3000)setMoving(false);},1000);}else clearInterval(tmr.current);return()=>clearInterval(tmr.current);},[recording,paused,actType]);
 
   const onPos=useCallback((pos)=>{
-    const {latitude,longitude,accuracy}=pos.coords;
-    setGps({label:accuracy<=20?"GPS Strong":accuracy<=40?"GPS Good":"GPS Fair",ok:true,err:false,acc:accuracy});
+    const {latitude,longitude,accuracy,speed}=pos.coords;
+    setGps({label:accuracy<=12?"GPS Strong":accuracy<=25?"GPS Good":accuracy<=45?"GPS Fair":"GPS Weak",ok:true,err:false,acc:accuracy});
     setAcquiring(false);
     if(pausedRef.current)return;
-    if(accuracy>50){setPoints(p=>p.length?p:[{lat:latitude,lng:longitude,acc:accuracy,t:Date.now()}]);return;}
-    const pt={lat:latitude,lng:longitude,acc:accuracy,t:Date.now()};
+    const tNow=Date.now();
+    /* drop unusable fixes entirely (don't even seed) above 45m, but keep one for map centering */
+    if(accuracy>45){setPoints(p=>p.length?p:[{lat:latitude,lng:longitude,acc:accuracy,t:tNow}]);return;}
+    const pt={lat:latitude,lng:longitude,acc:accuracy,t:tNow};
     if(lastPt.current){
       const dKm=haversineKm(lastPt.current,pt);const dM=dKm*1000;
-      if(dM>2.0 && dM<200){
+      const dt=(tNow-lastPt.current.t)/1000; // seconds between fixes
+      /* movement must clear the noise floor: bigger of (a fixed 4m) and (combined accuracy of the two points) */
+      const noiseFloor=Math.max(4, (accuracy+(lastPt.current.acc||accuracy))*0.5);
+      /* speed sanity: m/s implied by this move; cap by activity (sprinter ~10m/s, cyclist ~17m/s) */
+      const maxSpeed=actType==="Cycling"?18:actType==="Run"||actType==="Jog"?9:actType==="Hike"?4:6;
+      const impliedSpeed=dt>0?dM/dt:0;
+      const accept = dM>noiseFloor && dM<300 && (dt<=0||impliedSpeed<=maxSpeed*1.6);
+      if(accept){
         distRef.current+=dKm;setDist(+distRef.current.toFixed(4));
-        if(stride[actType]>0){stepRef.current+=Math.round(dM/stride[actType]);setSteps(stepRef.current);}
-        setMoving(true);lastMoveT.current=Date.now();
+        if(stride[actType]>0){stepRef.current+=Math.max(1,Math.round(dM/stride[actType]));setSteps(stepRef.current);}
+        setMoving(true);lastMoveT.current=tNow;
+        lastPt.current=pt;                 // advance reference only on an accepted move
+        setPoints(p=>[...p.slice(-1500),pt]);
+      } else {
+        /* rejected as noise: keep the more accurate of the two as the reference, don't add distance */
+        if(accuracy < (lastPt.current.acc||accuracy)) lastPt.current=pt;
       }
+    } else {
+      lastPt.current=pt;
+      setPoints(p=>[...p.slice(-1500),pt]);
     }
-    lastPt.current=pt;
-    setPoints(p=>[...p.slice(-1500),pt]);
   },[actType]);
   const onErr=useCallback((e)=>{const msg=e.code===1?"Location permission denied":e.code===2?"Position unavailable":"GPS timeout";setGps({label:msg,ok:false,err:true,acc:null});setAcquiring(false);},[]);
 
@@ -544,10 +613,10 @@ function HealthCenter({t,showNotif}){
 /* ---------- Challenges ---------- */
 function ChallengesView({t,user,isAdmin,showNotif}){
   const vp=useViewport();const[ch,setCh]=useState(getChallenges());const[create,setCreate]=useState(false);
-  const[form,setForm]=useState({name:"",duration:"",goal:"",icon:""});
+  const[form,setForm]=useState({name:"",duration:"",goal:"",icon:"trophy"});
   const myId=user.id;
   const join=(c)=>{const joined=(c.participants||[]).includes(myId);const np=joined?c.participants.filter(x=>x!==myId):[...(c.participants||[]),myId];const nc=ch.map(x=>x.id===c.id?{...x,participants:np}:x);setCh(nc);setChallenges(nc);showNotif(joined?"Left "+c.name:"Joined "+c.name+"!");};
-  const saveCh=()=>{if(!form.name||!form.duration){showNotif("Name and duration required","err");return;}const nc=[{id:Date.now(),name:form.name,duration:form.duration,goal:form.goal,icon:form.icon,participants:[],created:Date.now()},...ch];setCh(nc);setChallenges(nc);showNotif("Challenge created");setCreate(false);setForm({name:"",duration:"",goal:"",icon:""});};
+  const saveCh=()=>{if(!form.name||!form.duration){showNotif("Name and duration required","err");return;}const nc=[{id:Date.now(),name:form.name,duration:form.duration,goal:form.goal,icon:form.icon,participants:[],created:Date.now()},...ch];setCh(nc);setChallenges(nc);showNotif("Challenge created");setCreate(false);setForm({name:"",duration:"",goal:"",icon:"trophy"});};
   const remove=(c)=>{const nc=ch.filter(x=>x.id!==c.id);setCh(nc);setChallenges(nc);showNotif("Challenge removed","err");};
   return h("div",{className:"fd"},
     isAdmin&&h("div",{style:{display:"flex",justifyContent:"flex-end",marginBottom:16}},h("button",{onClick:()=>setCreate(true),style:{background:t.Y,border:"none",borderRadius:9,padding:"10px 18px",fontSize:13,fontWeight:800,color:"#080808",cursor:"pointer"}},"+ Create Challenge")),
@@ -575,9 +644,9 @@ function MembersView({t,showNotif}){
   const filtered=MEMBERS.filter(u=>u.name.toLowerCase().includes(search.toLowerCase())||u.hub.toLowerCase().includes(search.toLowerCase())||(u.occupation||"").toLowerCase().includes(search.toLowerCase()));
   const blank={name:"",email:"",phone:"",gender:"Male",occupation:"",country:"Nigeria",state:"",lga:"",address:"",hub:HUBS_LIST[0],status:"new",weight:"",height:"",bp:"",hr:"",password:"",goals:[],verified:true};
   const openAdd=()=>{setForm({...blank});setModal("add");};const openEdit=(m)=>{setForm({...m});setModal("edit");setSel(null);};
-  const save=()=>{if(!form.name||!form.email){showNotif("Name and email are required","err");return;}if(modal==="add"&&MEMBERS.find(m=>m.email.toLowerCase()===form.email.toLowerCase())){showNotif("A member with this email already exists","err");return;}if(modal==="add"){const id=nextMemberId();const pw=(form.password&&form.password.length>=6)?form.password:"Bfa"+Math.random().toString(36).slice(2,8);MEMBERS.push({...form,id,role:"member",avatar:initials(form.name),joined:new Date().toLocaleString("en-US",{month:"short",year:"numeric"}),streak:0,sessions:0,km:0,bmi:form.height&&form.weight?+((form.weight/(form.height/100)**2).toFixed(1)):0,password:pw,attendance:[]});showNotif(form.name+" added \u00b7 password: "+pw);}else{const idx=MEMBERS.findIndex(m=>m.id===form.id);if(idx>-1)MEMBERS[idx]={...MEMBERS[idx],...form,bmi:form.height&&form.weight?+((form.weight/(form.height/100)**2).toFixed(1)):MEMBERS[idx].bmi};showNotif(form.name+"'s biodata updated");}persist();setModal(null);force(x=>x+1);};
+  const save=()=>{if(!form.name||!form.email){showNotif("Name and email are required","err");return;}const cloud=(typeof bfaSaveMember==="function");if(modal==="add"&&MEMBERS.find(m=>m.email.toLowerCase()===form.email.toLowerCase())){showNotif("A member with this email already exists","err");return;}if(modal==="add"){if(cloud){showNotif("In multi-device mode, ask the member to register themselves \u2014 their account then needs their own email & password.","err");return;}const id=nextMemberId();const pw=(form.password&&form.password.length>=6)?form.password:"Bfa"+Math.random().toString(36).slice(2,8);MEMBERS.push({...form,id,role:"member",avatar:initials(form.name),joined:new Date().toLocaleString("en-US",{month:"short",year:"numeric"}),streak:0,sessions:0,km:0,bmi:form.height&&form.weight?+((form.weight/(form.height/100)**2).toFixed(1)):0,password:pw,attendance:[]});showNotif(form.name+" added \u00b7 password: "+pw);}else{const idx=MEMBERS.findIndex(m=>m.id===form.id);if(idx>-1){MEMBERS[idx]={...MEMBERS[idx],...form,bmi:form.height&&form.weight?+((form.weight/(form.height/100)**2).toFixed(1)):MEMBERS[idx].bmi};if(cloud)bfaSaveMember(MEMBERS[idx]);}showNotif(form.name+"'s biodata updated");}if(!cloud)persist();setModal(null);force(x=>x+1);};
   const remove=(m)=>{if(m.role==="admin"){showNotif("Cannot remove the administrator","err");return;}const idx=MEMBERS.findIndex(x=>x.id===m.id);if(idx>-1)MEMBERS.splice(idx,1);persist();showNotif(m.name+" removed","err");setSel(null);force(x=>x+1);};
-  const resetPass=(m)=>{const pw="Bfa"+Math.random().toString(36).slice(2,8);m.password=pw;persist();showNotif("New password for "+m.name+": "+pw);};
+  const resetPass=(m)=>{if(typeof bfaResetPassword==="function"){bfaResetPassword(m.email);showNotif("Password-reset email sent to "+m.email);return;}const pw="Bfa"+Math.random().toString(36).slice(2,8);m.password=pw;persist();showNotif("New password for "+m.name+": "+pw);};
   const toggleGoal=(g)=>setForm(f=>({...f,goals:(f.goals||[]).includes(g)?f.goals.filter(x=>x!==g):[...(f.goals||[]),g]}));
   const stateOpts=form&&form.country==="Nigeria"?Object.keys(NIGERIA_STATES_LGAS):[];
   const lgaOpts=form&&form.country==="Nigeria"&&form.state&&NIGERIA_STATES_LGAS[form.state]?NIGERIA_STATES_LGAS[form.state]:[];
@@ -636,7 +705,7 @@ function SettingsView({t,user,isAdmin,dm,setDm,showNotif,onSignOut}){
     h(Section,{title:"Profile"},h("div",{style:{display:"grid",gridTemplateColumns:vp.mobile?"1fr":"1fr 1fr",gap:12}},h(Inp,{label:"Name",val:profile.name,set:v=>setProfile({...profile,name:v}),t}),h(Inp,{label:"Email",val:profile.email,set:v=>setProfile({...profile,email:v}),t}),h(Inp,{label:"Phone",val:profile.phone,set:v=>setProfile({...profile,phone:v}),t}),h(Sel,{label:"Hub",val:profile.hub,set:v=>setProfile({...profile,hub:v}),opts:HUBS_LIST,t})),h("button",{onClick:saveProfile,style:{background:t.Y,border:"none",borderRadius:10,padding:"11px 20px",fontSize:13,fontWeight:800,color:"#080808",cursor:"pointer",marginTop:6}},"Save Profile")),
     h(Section,{title:"Appearance"},h(Toggle,{on:dm,set:()=>setDm(!dm),label:"Dark Mode",desc:"Switch between light and dark themes"})),
     h(Section,{title:"Security"},h("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 0"}},h("div",null,h("p",{style:{color:t.text,fontSize:13,fontWeight:600,margin:"0 0 2px"}},"Remembered Login"),h("p",{style:{color:t.text2,fontSize:11,margin:0}},REMEMBERED?"This device remembers your login":"Not saved on this device")),h("button",{onClick:clearRemembered,disabled:!REMEMBERED,style:{background:REMEMBERED?t.surf3:"none",border:`1px solid ${t.border2}`,borderRadius:9,padding:"8px 14px",fontSize:12,fontWeight:600,color:REMEMBERED?t.text:t.text3,cursor:REMEMBERED?"pointer":"not-allowed"}},"Clear"))),
-    isAdmin&&h(Section,{title:"Administrator"},h("div",{style:{background:t.Yd,border:`1px solid ${t.Y}30`,borderRadius:11,padding:"14px 16px"}},h("p",{style:{color:t.Yt,fontSize:12,fontWeight:700,margin:"0 0 4px"}},"You have full backend access"),h("p",{style:{color:t.text2,fontSize:11,margin:0,lineHeight:1.6}},"As Executive Director, you alone can manage members, hubs, analytics and reset member passwords. Member accounts cannot access these controls."))),
+    isAdmin&&h(Section,{title:"Administrator"},h("div",{style:{background:t.Yd,border:`1px solid ${t.Y}30`,borderRadius:11,padding:"14px 16px"}},h("p",{style:{color:t.Yt,fontSize:12,fontWeight:700,margin:"0 0 4px"}},"You have full backend access"),h("p",{style:{color:t.text2,fontSize:11,margin:0,lineHeight:1.6}},"As the administrator, you alone can manage members, hubs, analytics and reset member passwords. Member accounts cannot access these controls."))),
     h(Section,{title:"About BefitAfrica"},h("p",{style:{color:t.text2,fontSize:12,lineHeight:1.7,margin:0}},"BefitAfrica \u2014 Africa's No. 1 Fitness NGO. \u201cFit to Lead.\u201d Building healthier communities across Lagos and beyond through accessible, community-driven fitness. Version 1.0")),
     h("button",{onClick:onSignOut,style:{background:"none",border:`1px solid ${t.err}50`,borderRadius:11,padding:"13px",fontSize:13,fontWeight:700,color:t.err,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8}},h(Icon,{name:"signout",size:16,color:t.err}),"Sign Out")
   );
@@ -660,6 +729,17 @@ function App(){
 
   /* On mount: auto-login from saved session so users aren't re-prompted to register */
   useEffect(()=>{
+    let cancelled=false;
+    if(typeof bfaRestoreSession==="function"){
+      /* Cloud backend: restore Supabase session (async) */
+      const splashWait=new Promise(r=>setTimeout(r,1400));
+      Promise.all([bfaRestoreSession().catch(()=>null),splashWait]).then(([u])=>{
+        if(cancelled)return;
+        if(u){setUser(u);setScreen("app");}else setScreen("auth");
+      });
+      return()=>{cancelled=true;};
+    }
+    /* Local fallback */
     const sess=loadSession();
     const timer=setTimeout(()=>{
       if(sess){const fresh=MEMBERS.find(m=>m.id===sess.id&&m.email===sess.email);if(fresh){setUser(fresh);setScreen("app");return;}}
@@ -671,7 +751,7 @@ function App(){
   const onLogin=(u)=>{setUser(u);setScreen("app");setNav("dashboard");showNotif("Welcome back, "+u.name.split(" ")[0]+"!");};
   const onNeedVerify=(email,token)=>{setPendingVerify({email,token});setScreen("verify");};
   const onVerified=(u)=>{saveSession(u);setUser(u);setScreen("app");setNav("dashboard");showNotif("Account verified! Welcome to BefitAfrica");};
-  const onSignOut=()=>{saveSession(null);setUser(null);setScreen("auth");setNav("dashboard");setMobileNavOpen(false);};
+  const onSignOut=()=>{if(typeof bfaLogout==="function"){bfaLogout();}else{saveSession(null);}setUser(null);setScreen("auth");setNav("dashboard");setMobileNavOpen(false);};
 
   if(screen==="splash")return h(Splash);
   if(screen==="auth")return h(React.Fragment,null,h(Notif,{n:notif}),h(Auth,{onLogin,onNeedVerify,dm,setDm}));

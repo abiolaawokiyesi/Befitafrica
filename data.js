@@ -5,7 +5,7 @@ const DB_KEY="bfa_db_v2",SESSION_KEY="bfa_session_v1",REMEMBER_KEY="bfa_remember
 function _safeParse(s,fb){try{return s?JSON.parse(s):fb;}catch(e){return fb;}}
 
 const SEED_MEMBERS=[
- {id:1,email:"abiola@befitafrica.org",password:"BFA@2026",name:"Abiola Awokiyesi",role:"admin",occupation:"NGO Executive Director",country:"Nigeria",state:"Lagos",lga:"Kosofe",address:"Alapere Estate, Ketu",hub:"Alapere",avatar:"AA",joined:"Sep 2025",status:"hub-supervisor",verified:true,streak:0,sessions:0,km:0,bmi:0,bp:"\u2014",hr:0,weight:0,height:0,phone:"",gender:"Female",goals:[],attendance:[]},
+ {id:1,email:"abiola@befitafrica.org",password:"BFA@2026",name:"Abiola Awokiyesi",role:"admin",occupation:"Administrator",country:"Nigeria",state:"Lagos",lga:"Kosofe",address:"Alapere Estate, Ketu",hub:"Alapere",avatar:"AA",joined:"Sep 2025",status:"hub-supervisor",verified:true,streak:0,sessions:0,km:0,bmi:0,bp:"\u2014",hr:0,weight:0,height:0,phone:"",gender:"Female",goals:[],attendance:[]},
 ];
 
 function loadDB(){const db=_safeParse(localStorage.getItem(DB_KEY),null);if(db&&Array.isArray(db.members)&&db.members.length)return db;const fresh={members:JSON.parse(JSON.stringify(SEED_MEMBERS)),nextId:2};saveDB(fresh);return fresh;}

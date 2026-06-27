@@ -38,24 +38,56 @@
     .leaflet-container{background:#0c1b2c;font-family:inherit;}
     .leaflet-pane,.leaflet-top,.leaflet-bottom{z-index:400 !important;}
     .leaflet-control-attribution{font-size:9px;}
-    /* Animated athlete avatar (current-location marker) */
+    /* Realistic animated athlete avatar (current-location marker) */
     .bfaAvatarWrap{background:none !important;border:none !important;}
-    .bfaAvatar .bfaBody{transform-origin:20px 24px;}
-    .bfaRun .bfaBody{animation:bfaBob 0.5s ease-in-out infinite;}
-    .bfaRun .bfaLegA{transform-origin:18px 26px;animation:bfaLegSwing 0.5s ease-in-out infinite;}
-    .bfaRun .bfaLegB{transform-origin:22px 26px;animation:bfaLegSwing 0.5s ease-in-out infinite reverse;}
-    .bfaRun .bfaArmA{transform-origin:17px 16px;animation:bfaArmSwing 0.5s ease-in-out infinite reverse;}
-    .bfaRun .bfaArmB{transform-origin:23px 16px;animation:bfaArmSwing 0.5s ease-in-out infinite;}
-    .bfaWalk .bfaBody{animation:bfaBob 0.9s ease-in-out infinite;}
-    .bfaWalk .bfaLegA{transform-origin:18px 26px;animation:bfaLegSwingS 0.9s ease-in-out infinite;}
-    .bfaWalk .bfaLegB{transform-origin:22px 26px;animation:bfaLegSwingS 0.9s ease-in-out infinite reverse;}
-    .bfaWalk .bfaArmA{transform-origin:17px 16px;animation:bfaArmSwingS 0.9s ease-in-out infinite reverse;}
-    .bfaWalk .bfaArmB{transform-origin:23px 16px;animation:bfaArmSwingS 0.9s ease-in-out infinite;}
-    @keyframes bfaLegSwing{0%,100%{transform:rotate(28deg);}50%{transform:rotate(-28deg);}}
-    @keyframes bfaLegSwingS{0%,100%{transform:rotate(16deg);}50%{transform:rotate(-16deg);}}
-    @keyframes bfaArmSwing{0%,100%{transform:rotate(30deg);}50%{transform:rotate(-30deg);}}
-    @keyframes bfaArmSwingS{0%,100%{transform:rotate(16deg);}50%{transform:rotate(-16deg);}}
-    @keyframes bfaBob{0%,100%{transform:translateY(0);}50%{transform:translateY(-2px);}}
+    .bfaAvatar svg{overflow:visible;}
+    .bfaAvatar g{transform-box:fill-box;}
+    /* pivots */
+    .bfaThighF,.bfaThighB{transform-origin:50% 0%;}
+    .bfaShinF,.bfaShinB{transform-origin:50% 0%;}
+    .bfaUpArmF,.bfaUpArmB{transform-origin:50% 0%;}
+    .bfaForeF,.bfaForeB{transform-origin:50% 0%;}
+    .bfaHead{transform-origin:50% 100%;}
+
+    /* RUN gait — fast, big strides, knee/elbow bend, vertical bob */
+    .bfaRun .bfaAvatar,.bfaRun{}
+    .bfaRun .bfaThighF{animation:thighF .62s ease-in-out infinite;}
+    .bfaRun .bfaThighB{animation:thighB .62s ease-in-out infinite;}
+    .bfaRun .bfaShinF{animation:shinF .62s ease-in-out infinite;}
+    .bfaRun .bfaShinB{animation:shinB .62s ease-in-out infinite;}
+    .bfaRun .bfaUpArmF{animation:armF .62s ease-in-out infinite;}
+    .bfaRun .bfaUpArmB{animation:armB .62s ease-in-out infinite;}
+    .bfaRun .bfaForeF{animation:foreBend .62s ease-in-out infinite;}
+    .bfaRun .bfaForeB{animation:foreBend .62s ease-in-out infinite;}
+    .bfaRun .bfaHead{animation:bob .62s ease-in-out infinite;}
+
+    /* WALK gait — slower, smaller strides, near-straight knees */
+    .bfaWalk .bfaThighF{animation:thighFw 1s ease-in-out infinite;}
+    .bfaWalk .bfaThighB{animation:thighBw 1s ease-in-out infinite;}
+    .bfaWalk .bfaShinF{animation:shinFw 1s ease-in-out infinite;}
+    .bfaWalk .bfaShinB{animation:shinBw 1s ease-in-out infinite;}
+    .bfaWalk .bfaUpArmF{animation:armFw 1s ease-in-out infinite;}
+    .bfaWalk .bfaUpArmB{animation:armBw 1s ease-in-out infinite;}
+    .bfaWalk .bfaHead{animation:bobS 1s ease-in-out infinite;}
+
+    /* RUN keyframes */
+    @keyframes thighF{0%{transform:rotate(-38deg);}50%{transform:rotate(34deg);}100%{transform:rotate(-38deg);}}
+    @keyframes thighB{0%{transform:rotate(34deg);}50%{transform:rotate(-38deg);}100%{transform:rotate(34deg);}}
+    @keyframes shinF{0%{transform:rotate(10deg);}25%{transform:rotate(70deg);}50%{transform:rotate(8deg);}75%{transform:rotate(2deg);}100%{transform:rotate(10deg);}}
+    @keyframes shinB{0%{transform:rotate(8deg);}25%{transform:rotate(2deg);}50%{transform:rotate(10deg);}75%{transform:rotate(70deg);}100%{transform:rotate(8deg);}}
+    @keyframes armF{0%{transform:rotate(42deg);}50%{transform:rotate(-32deg);}100%{transform:rotate(42deg);}}
+    @keyframes armB{0%{transform:rotate(-32deg);}50%{transform:rotate(42deg);}100%{transform:rotate(-32deg);}}
+    @keyframes foreBend{0%,100%{transform:rotate(-55deg);}50%{transform:rotate(-70deg);}}
+    @keyframes bob{0%,100%{transform:translateY(0);}25%{transform:translateY(-2.5px);}50%{transform:translateY(0);}75%{transform:translateY(-2.5px);}}
+
+    /* WALK keyframes */
+    @keyframes thighFw{0%{transform:rotate(-22deg);}50%{transform:rotate(20deg);}100%{transform:rotate(-22deg);}}
+    @keyframes thighBw{0%{transform:rotate(20deg);}50%{transform:rotate(-22deg);}100%{transform:rotate(20deg);}}
+    @keyframes shinFw{0%{transform:rotate(4deg);}30%{transform:rotate(36deg);}60%{transform:rotate(2deg);}100%{transform:rotate(4deg);}}
+    @keyframes shinBw{0%{transform:rotate(2deg);}30%{transform:rotate(4deg);}60%{transform:rotate(36deg);}100%{transform:rotate(2deg);}}
+    @keyframes armFw{0%{transform:rotate(20deg);}50%{transform:rotate(-18deg);}100%{transform:rotate(20deg);}}
+    @keyframes armBw{0%{transform:rotate(-18deg);}50%{transform:rotate(20deg);}100%{transform:rotate(-18deg);}}
+    @keyframes bobS{0%,100%{transform:translateY(0);}50%{transform:translateY(-1.5px);}}
   </style>
 </head>
 <body>
@@ -64,8 +96,12 @@
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Supabase client (cloud backend) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Data layer must load before the app -->
   <script src="data.js"></script>
+  <!-- Cloud overrides: comment out the next line to revert to local-only storage -->
+  <script src="data-supabase.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
