@@ -75,13 +75,24 @@
 
   /* ---------- 6. AUTH ---------- */
   async function bfaRegister(profile, password){
-    var r = await sb.auth.signUp({email:profile.email,password:password,options:{emailRedirectTo:window.location.origin}});
+    /* Pass profile fields as user metadata. A database trigger
+       (handle_new_user) creates the members row automatically, which
+       avoids the RLS "new row violates policy" error at signup time. */
+    var meta = {
+      name:profile.name, occupation:profile.occupation, country:profile.country,
+      state:profile.state, lga:profile.lga, address:profile.address, hub:profile.hub,
+      gender:profile.gender, phone:profile.phone, avatar:profile.avatar,
+      bmi:String(profile.bmi||0), bp:profile.bp||'\u2014', hr:String(profile.hr||0),
+      weight:String(profile.weight||0), height:String(profile.height||0),
+      goals:JSON.stringify(profile.goals||[]), joined:profile.joined||''
+    };
+    var r = await sb.auth.signUp({email:profile.email,password:password,options:{emailRedirectTo:window.location.origin,data:meta}});
     if(r.error) return {error:r.error.message};
     var uid = r.data.user && r.data.user.id;
     if(!uid) return {error:"Sign-up failed"};
-    var row = memberToRow(Object.assign({},profile,{id:uid,verified:false}));
-    var e2 = await sb.from('members').insert(row);
-    if(e2.error) return {error:e2.error.message};
+    /* Best-effort: if a session exists immediately (email confirmation off),
+       ensure the row exists. With confirmation ON, the trigger handles it. */
+    try{ await sb.from('members').upsert(memberToRow(Object.assign({},profile,{id:uid,verified:false}))); }catch(e){ /* trigger will handle it */ }
     return {ok:true, userId:uid};
   }
   async function bfaLogin(email,password){
@@ -89,7 +100,18 @@
     if(r.error) return {error:r.error.message};
     _session = {id:r.data.user.id,email:r.data.user.email};
     await bfaLoadAll();
-    return {ok:true, user:MEMBERS.find(function(m){return m.id===r.data.user.id;})};
+    var me = MEMBERS.find(function(m){return m.id===r.data.user.id;});
+    if(!me){
+      /* Auth account exists but no profile row — create one now that we ARE authenticated. */
+      try{
+        var meEmail=r.data.user.email;
+        await sb.from('members').upsert({id:r.data.user.id,email:meEmail,name:(meEmail.split('@')[0]||'Member'),role:'member',status:'new',verified:true});
+        await bfaLoadAll();
+        me = MEMBERS.find(function(m){return m.id===r.data.user.id;});
+      }catch(e){ console.error("profile self-heal failed",e); }
+    }
+    if(!me) return {error:"Your login works, but no member profile is linked to it yet. Ask the admin to add your profile."};
+    return {ok:true, user:me};
   }
   async function bfaLogout(){ try{await sb.auth.signOut();}catch(e){} _session=null; }
   async function bfaResetPassword(email){

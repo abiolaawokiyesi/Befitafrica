@@ -748,7 +748,7 @@ function App(){
     return()=>clearTimeout(timer);
   },[]);
 
-  const onLogin=(u)=>{setUser(u);setScreen("app");setNav("dashboard");showNotif("Welcome back, "+u.name.split(" ")[0]+"!");};
+  const onLogin=(u)=>{if(!u){showNotif("Signed in, but your member profile wasn't found. Please contact the admin.","err");return;}setUser(u);setScreen("app");setNav("dashboard");showNotif("Welcome back, "+((u.name||"there").split(" ")[0])+"!");};
   const onNeedVerify=(email,token)=>{setPendingVerify({email,token});setScreen("verify");};
   const onVerified=(u)=>{saveSession(u);setUser(u);setScreen("app");setNav("dashboard");showNotif("Account verified! Welcome to BefitAfrica");};
   const onSignOut=()=>{if(typeof bfaLogout==="function"){bfaLogout();}else{saveSession(null);}setUser(null);setScreen("auth");setNav("dashboard");setMobileNavOpen(false);};
